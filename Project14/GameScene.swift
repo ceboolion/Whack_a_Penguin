@@ -58,6 +58,7 @@ class GameScene: SKScene {
       if node.name == "charFriend"{
         score -= 5
         run(SKAction.playSoundFileNamed("whackBad.caf", waitForCompletion: false))
+
       } else if node.name == "charEnemy"{
         whackSlot.charNode.xScale = 0.85
         whackSlot.charNode.yScale = 0.85

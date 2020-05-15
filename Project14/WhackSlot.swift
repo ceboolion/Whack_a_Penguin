@@ -42,14 +42,28 @@ class WhackSlot: SKNode {
     if Int.random(in: 0...2) == 0 {
       charNode.texture = SKTexture(imageNamed: "penguinGood")
       charNode.name = "charFriend"
+      showMud()
     } else {
       charNode.texture = SKTexture(imageNamed: "penguinEvil")
       charNode.name = "charEnemy"
+      showMud()
     }
     
     DispatchQueue.main.asyncAfter(deadline: .now() + (hideTime * 3.5)) {
       [weak self] in
       self?.hide()
+    }
+  }
+  
+  func showMud(){
+    if let mud = SKEmitterNode(fileNamed: "Mud"){
+      mud.zPosition = 1
+      mud.position = CGPoint(x: 0, y: -10)
+      addChild(mud)
+      mud.run(SKAction.sequence([
+        SKAction.wait(forDuration: 2.5),
+        SKAction.removeFromParent()
+      ]))
     }
   }
   
@@ -65,6 +79,13 @@ class WhackSlot: SKNode {
     let hide = SKAction.moveBy(x: 0, y: -80, duration: 0.5)
     let notVisible = SKAction.run { [weak self] in self?.isVisble = false}
     let sequence = SKAction.sequence([delay, hide, notVisible])
+    if let smoke = SKEmitterNode(fileNamed: "Smoke"){
+      addChild(smoke)
+      smoke.run(SKAction.sequence([
+        SKAction.wait(forDuration: 4.0),
+        SKAction.removeFromParent()
+      ]))
+    }
     charNode.run(sequence)
   }
 }
